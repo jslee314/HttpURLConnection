@@ -8,21 +8,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class MainActivity extends AppCompatActivity {
-    private OKHttpConnection httpConn = OKHttpConnection.getInstance();
 
     Button button1;
     ImageView imageView1;
@@ -30,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     Button button2;
     ImageView imageView2;
 
+    Button button3;
+    ImageView imageView3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,23 +36,15 @@ public class MainActivity extends AppCompatActivity {
 
         imageView1 = (ImageView) findViewById(R.id.imageView1);
         button1 = (Button) findViewById(R.id.button1);
-
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendImageRequestByHttpUrlConnection(url);
-            }
-        });
+        button1.setOnClickListener(v -> sendImageRequestByHttpUrlConnection(url));
 
         imageView2 = (ImageView) findViewById(R.id.imageView2);
         button2 = (Button) findViewById(R.id.button2);
+        button2.setOnClickListener(v -> sendImageRequestByOKHttp(url));
 
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendImageRequestByOKHttp(url);
-            }
-        });
+        imageView3 = (ImageView) findViewById(R.id.imageView3);
+        button3 = (Button) findViewById(R.id.button3);
+        button3.setOnClickListener(v -> sendImageRequestByRetrofit(url));
 
     }
 
@@ -66,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendImageRequestByOKHttp(String url){
+        OKHttpConnection httpConn = OKHttpConnection.getInstance();
 
         // 네트워크 통신하는 작업은 무조건 작업스레드를 생성해서 호출 해줄 것!!
         new Thread() {
@@ -81,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         public void onFailure(Call call, IOException e) {
             Log.d("jjslee", "콜백오류:"+e.getMessage());
         }
+
         @Override
         public void onResponse(Call call, Response response) throws IOException {
             final Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
@@ -93,4 +84,42 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     };
+
+    private void sendImageRequestByRetrofit(String url){
+        new Thread() {
+            public void run() {
+                final RetrofitHelper retrofitHelper = RetrofitHelper.getInstance();
+                Bitmap bitmap = retrofitHelper.initRetrofit(url);
+
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        imageView3.setImageBitmap(bitmap);
+                    }
+                });
+
+
+            }
+        }.start();
+
+
+
+
+        new Thread() {
+            public void run() {
+                // 쓰레드 처리할 코드 작성
+
+
+            }
+        }.start();
+
+
+    }
+
+
+
+
+
+
+
 }
