@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         imageView3 = (ImageView) findViewById(R.id.imageView3);
         button3 = (Button) findViewById(R.id.button3);
         button3.setOnClickListener(v -> sendImageRequestByRetrofit(base_url, variable_url));
-
+        // test
     }
 
     public void sendImageRequestByHttpUrlConnection(String base_url, String variable_url) {
