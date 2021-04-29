@@ -1,9 +1,7 @@
-package com.jslee.httpurlconnection;
+package com.jslee.restApiTools.retrofit;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
-import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -30,6 +28,7 @@ public class RetrofitHelper {
                 .build();
 
         RetrofitInterface retrofitInterface = retrofit.create(RetrofitInterface.class);
+
 
         Call<ResponseBody> request = retrofitInterface.getImageData(variable_url);
         try {

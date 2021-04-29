@@ -1,4 +1,4 @@
-package com.jslee.httpurlconnection;
+package com.jslee.restApiTools;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.jslee.httpurlconnection", appContext.getPackageName());
+        assertEquals("com.jslee.restApiTools", appContext.getPackageName());
     }
 }

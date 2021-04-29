@@ -1,4 +1,4 @@
-package com.jslee.httpurlconnection;
+package com.jslee.restApiTools;
 
 import org.junit.Test;
 

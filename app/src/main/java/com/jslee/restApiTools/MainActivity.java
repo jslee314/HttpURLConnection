@@ -1,4 +1,4 @@
-package com.jslee.httpurlconnection;
+package com.jslee.restApiTools;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,10 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.jslee.restApiTools.okhttp.OKHttpConnection;
+import com.jslee.restApiTools.retrofit.RetrofitHelper;
+import com.jslee.restApiTools.urlConnection.ImageLoadTask;
 
 import java.io.IOException;
 
@@ -41,16 +45,32 @@ public class MainActivity extends AppCompatActivity {
 
         imageView3 = (ImageView) findViewById(R.id.imageView3);
         button3 = (Button) findViewById(R.id.button3);
-        button3.setOnClickListener(v -> sendImageRequestByRetrofit(base_url, variable_url));
-        // test
+        button3.setOnClickListener(v -> {
+            sendImageRequestByRetrofit(base_url, variable_url);
+        });
+
     }
 
+    /**
+    * @내용 : urlConnection 을 통한 Rest api 통신
+    * @수정 :
+    * @버젼 : 0.0.0
+    * @최초작성일 : 2021-04-29 오후 7:45
+    * @작성자 : 이재선
+    **/
     public void sendImageRequestByHttpUrlConnection(String base_url, String variable_url) {
         // 네트워크 통신 -> 작업스레드를 생성해서 호출
         ImageLoadTask task = new ImageLoadTask(base_url + variable_url, imageView1);
         task.execute();
     }
 
+    /**
+    * @내용 : okhttp 를 통한 Rest api 통신
+    * @수정 :
+    * @버젼 : 0.0.0
+    * @최초작성일 : 2021-04-29 오후 7:45
+    * @작성자 : 이재선
+    **/
     private void sendImageRequestByOKHttp(String base_url, String variable_url){
         // 네트워크 통신 -> 작업스레드를 생성해서 호출
         new Thread() {
@@ -72,13 +92,10 @@ public class MainActivity extends AppCompatActivity {
         public void onResponse(Call call, Response response) {
             ResponseBody responseBody = response.body();
             final Bitmap bitmap = BitmapFactory.decodeStream(responseBody.byteStream());
+
             // UI 조작 -> 다시 매인 스레드로
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    imageView2.setImageBitmap(bitmap);
-                }
-            });
+            new Handler(Looper.getMainLooper()).post(() -> imageView2.setImageBitmap(bitmap));
+
         }
     };
 
@@ -87,13 +104,10 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 final RetrofitHelper retrofitHelper = RetrofitHelper.getInstance();
                 final Bitmap bitmap = retrofitHelper.initRetrofit(base_url, variable_url);
+
                 // UI 조작 -> 다시 매인 스레드로
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        imageView3.setImageBitmap(bitmap);
-                    }
-                });
+                runOnUiThread(() -> imageView3.setImageBitmap(bitmap));
+
 
             }
         }.start();

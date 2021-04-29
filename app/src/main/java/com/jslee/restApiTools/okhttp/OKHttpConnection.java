@@ -1,4 +1,5 @@
-package com.jslee.httpurlconnection;
+
+package com.jslee.restApiTools.okhttp;
 
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -15,17 +16,7 @@ public class OKHttpConnection {
 
     private OKHttpConnection(){ this.client = new OkHttpClient(); }
 
-
-    /** 웹 서버로 요청을 한다. */
-    public void requestGetWebServer(String url, Callback callback) {
-
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-        client.newCall(request).enqueue(callback);
-    }
-
-
+    /** Post 요청 */
     public void requestPostWebServer(String parameter, String url, Callback callback) {
         RequestBody body = new FormBody.Builder()
                 .add("parameter", parameter)
@@ -37,5 +28,19 @@ public class OKHttpConnection {
         client.newCall(request).enqueue(callback);
     }
 
+    /** Get 요청 */
+    public void requestGetWebServer(String url, Callback callback) {
 
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+
+
+    /** Post 요청 */
+
+
+    /** Delete 요청 */
 }

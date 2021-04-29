@@ -1,4 +1,4 @@
-package com.jslee.httpurlconnection;
+package com.jslee.restApiTools.urlConnection;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
