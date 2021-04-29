@@ -43,8 +43,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // lombok
-    compileOnly 'org.projectlombok:lombok:1.18.12'
-    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    def lombok_ver = "1.18.16"
+    implementation "org.projectlombok:lombok:$lombok_ver"
+    annotationProcessor "org.projectlombok:lombok:$lombok_ver"
 
 
     // okhttp
