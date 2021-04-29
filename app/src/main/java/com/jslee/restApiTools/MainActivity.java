@@ -1,6 +1,7 @@
 package com.jslee.restApiTools;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.jslee.restApiTools.databinding.ActivityMainBinding;
 import com.jslee.restApiTools.okhttp.OKHttpConnection;
 import com.jslee.restApiTools.retrofit.RetrofitHelper;
 import com.jslee.restApiTools.urlConnection.ImageLoadTask;
@@ -24,13 +26,14 @@ import okhttp3.ResponseBody;
 
 public class MainActivity extends AppCompatActivity {
 
+    ActivityMainBinding binding;
     Button button1, button2, button3;
     ImageView imageView1, imageView2, imageView3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         String base_url = "https://drive.google.com/";
         String variable_url = "uc?id=16Qqso9sZwe1UAcoXQX65wrokyb4_l3_J";
