@@ -27,14 +27,14 @@ import okhttp3.ResponseBody;
 
 @Getter
 @Setter
-public class MainViewModel extends AndroidViewModel implements HttpURLConnHelper.URLConnCallback {
+public class MainViewModel extends AndroidViewModel implements HttpURLConnHelper.URLConnCallback , RetrofitHelper.RetrofitCallback {
 
     private MutableLiveData<Code.NETWORKING> getBitmap = new MutableLiveData<>();
     private Bitmap bitmap;
 
+    private String base_url;
+    private String variable_url;
 
-    String base_url;
-    String variable_url;
     public MainViewModel(@NonNull Application application) {
         super(application);
     }
@@ -56,6 +56,7 @@ public class MainViewModel extends AndroidViewModel implements HttpURLConnHelper
                 break;
 
             case Retrofit:
+                //sendImageRequestByRetrofitSync();
                 sendImageRequestByRetrofit();
                 break;
         }
@@ -128,19 +129,37 @@ public class MainViewModel extends AndroidViewModel implements HttpURLConnHelper
     * @최초작성일 : 2021-04-29 오후 11:29
     * @작성자 : 이재선
     **/
-    private void sendImageRequestByRetrofit() {
+    // 동기 처리
+    private void sendImageRequestByRetrofitSync() {
         new Thread() {
             public void run() {
-                final RetrofitHelper retrofitHelper = RetrofitHelper.getInstance();
+                RetrofitHelper retrofitHelper = RetrofitHelper.getInstance();
 
-                bitmap = retrofitHelper.initRetrofit(base_url, variable_url);
-
+                bitmap = retrofitHelper.requestGetSync(base_url, variable_url);
                 new Handler(Looper.getMainLooper()).post(() -> getBitmap.setValue(Code.NETWORKING.Retrofit));
 
             }
         }.start();
     }
 
+    // 비동기 처리
+    private void sendImageRequestByRetrofit() {
+        RetrofitHelper retrofitHelper = RetrofitHelper.getInstance();
+        retrofitHelper.requestGet(base_url, variable_url, this);
+
+    }
 
 
+    @Override
+    public void onSucceedRetrofit(Bitmap bitmap) {
+        this.bitmap = bitmap;
+        new Handler(Looper.getMainLooper()).post(() -> getBitmap.setValue(Code.NETWORKING.Retrofit));
+
+    }
+
+    @Override
+    public void onFailedRetrofit(Throwable throwable) {
+        Log.d("jjslee", "콜백오류:"+throwable.getMessage());
+
+    }
 }
