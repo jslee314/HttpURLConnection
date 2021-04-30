@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 
+import com.jslee.restApiTools.data.Code;
 import com.jslee.restApiTools.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,10 +36,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpObserver() {
-        /* throw를 통해 발생시킨 에러(crashlytics에 보낼것)*/
         mViewModel.getGetBitmap().observe(this, (clickedBtnId -> {
             if (clickedBtnId.equals(Code.NETWORKING.UrlConnection)) {
-
+                binding.imageView1.setImageBitmap(mViewModel.getBitmap());
 
             }else if(clickedBtnId.equals(Code.NETWORKING.OKHttp)){
                 binding.imageView2.setImageBitmap(mViewModel.getBitmap());
@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
                 binding.imageView3.setImageBitmap(mViewModel.getBitmap());
             }
         }));
-
     }
 
 }

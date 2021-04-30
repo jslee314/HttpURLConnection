@@ -29,7 +29,7 @@ public class RetrofitHelper {
 
         RetrofitInterface retrofitInterface = retrofit.create(RetrofitInterface.class);
 
-
+        // 동기방식
         Call<ResponseBody> request = retrofitInterface.getImageData(variable_url);
         try {
             ResponseBody responseBody = request.execute().body();

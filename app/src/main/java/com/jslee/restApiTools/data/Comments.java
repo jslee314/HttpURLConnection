@@ -1,4 +1,4 @@
-package com.jslee.restApiTools;
+package com.jslee.restApiTools.data;
 
 /**
  *     "postId": 1,

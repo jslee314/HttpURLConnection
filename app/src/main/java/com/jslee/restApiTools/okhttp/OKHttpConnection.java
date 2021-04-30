@@ -17,7 +17,7 @@ public class OKHttpConnection {
     private OKHttpConnection(){ this.client = new OkHttpClient(); }
 
     /** Post 요청 */
-    public void requestPostWebServer(String parameter, String url, Callback callback) {
+    public void requestPost(String parameter, String url, Callback callback) {
         RequestBody body = new FormBody.Builder()
                 .add("parameter", parameter)
                 .build();
@@ -29,7 +29,7 @@ public class OKHttpConnection {
     }
 
     /** Get 요청 */
-    public void requestGetWebServer(String url, Callback callback) {
+    public void requestGet(String url, Callback callback) {
 
         Request request = new Request.Builder()
                 .url(url)

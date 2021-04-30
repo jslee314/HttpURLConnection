@@ -11,8 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.jslee.restApiTools.data.Code;
 import com.jslee.restApiTools.okhttp.OKHttpConnection;
 import com.jslee.restApiTools.retrofit.RetrofitHelper;
+import com.jslee.restApiTools.urlConnection.HttpURLConnHelper;
 
 import java.io.IOException;
 
@@ -25,7 +27,7 @@ import okhttp3.ResponseBody;
 
 @Getter
 @Setter
-public class MainViewModel extends AndroidViewModel {
+public class MainViewModel extends AndroidViewModel implements HttpURLConnHelper.URLConnCallback {
 
     private MutableLiveData<Code.NETWORKING> getBitmap = new MutableLiveData<>();
     private Bitmap bitmap;
@@ -68,8 +70,22 @@ public class MainViewModel extends AndroidViewModel {
      **/
     public void sendImageRequestByHttpUrlConnection() {
         // 네트워크 통신 -> 작업스레드를 생성해서 호출
-//        ImageLoadTask task = new ImageLoadTask(base_url + variable_url, binding.imageView1);
-//        task.execute();
+        String urlStr = base_url + variable_url;
+
+        HttpURLConnHelper urlConn = HttpURLConnHelper.getInstance();
+        urlConn.requestGet(urlStr, this);
+
+    }
+    @Override
+    public void onSucceedUrlConn(Bitmap bitmap) {
+        this.bitmap = bitmap;
+        getBitmap.setValue(Code.NETWORKING.UrlConnection);
+    }
+
+    @Override
+    public void onFailedUrlConn(Throwable throwable) {
+        Log.d("jjslee", "콜백오류:"+throwable.getMessage());
+
     }
 
     /**
@@ -84,11 +100,12 @@ public class MainViewModel extends AndroidViewModel {
         new Thread() {
             public void run() {
                 OKHttpConnection httpConn = OKHttpConnection.getInstance();
-                httpConn.requestGetWebServer(base_url + variable_url, callback);
+                httpConn.requestGet(base_url + variable_url, okHttpCallback);
             }
         }.start();
     }
-    private final Callback callback = new Callback() {
+
+    private final Callback okHttpCallback = new Callback() {
 
         @Override
         public void onFailure(Call call, IOException e) {

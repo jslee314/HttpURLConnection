@@ -1,4 +1,4 @@
-package com.jslee.restApiTools;
+package com.jslee.restApiTools.data;
 
 public class Code {
     public enum NETWORKING {
