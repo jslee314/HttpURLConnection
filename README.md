@@ -1,5 +1,6 @@
-# restApiTools
+# restApi 3가지 방법(HttpUrlConnection, Okhttp, Retrofit)으로 구현
 HttpUrlConnection, Okhttp, Retrofit을 사용하여 restApi 통신 연습
+각 통신 방법별로 CRUD (post, get, put, delete)를 구현하여 Retrofit의 편리함을 느껴보자 :)
 
 
 ## HttpUrlConnection
