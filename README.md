@@ -11,6 +11,8 @@ java.net에 포함된 클래스로 별도의 라이브러리 추가 필요 없�
 ## Okhttp
 
 
+[블로그 설명 보러가기](https://jade314.tistory.com/entry/Android-Library-OKHttp-http)
+
 
 ## Retrofit을 사용하여 restApi 통신 연습
 annotation 방식으로 구현이 쉬움
